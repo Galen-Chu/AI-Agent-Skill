@@ -1,5 +1,5 @@
 ---
-name: diagram-generator
+name: mod-diagram-generator
 description: 通用流程圖/架構圖生成模組。將工作流程、系統架構、狀態轉換、資料庫結構等描述轉換成 Mermaid 圖表語法。當使用者要求「畫流程圖」「畫架構圖」「visualize this workflow」「產出 UML/ERD/mindmap」等視覺化需求時使用。屬於③能力模組層，無領域判斷，可被任何領域工作流（開發/設計/數據分析等）呼叫。
 tools: Read, Write
 skills: mermaid-syntax
