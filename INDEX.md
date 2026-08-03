@@ -51,8 +51,8 @@
 
 | 名稱 | 可重用範圍 | 觸發型態 | 需人在場 | 狀態 | 依賴關係 | 參考來源 |
 |---|---|---|---|---|---|---|
-| `mod-web-scraper` | 跨領域 | 兩者皆可 | 否 | ❌ 未建立（優先序 1） | 依賴 Skill `web-scraping-patterns` | 自建 |
-| `mod-summarizer` | 跨領域 | 兩者皆可 | 否 | ❌ 未建立（優先序 2） | 依賴 Skill `content-summarization` | 自建 |
+| `mod-web-scraper` | 跨領域 | 兩者皆可 | 否 | ✅ 已建立 | 依賴 Skill `web-scraping-patterns` | 自建 |
+| `mod-summarizer` | 跨領域 | 兩者皆可 | 否 | ✅ 已建立 | 依賴 Skill `content-summarization` | 自建 |
 | `mod-diagram-generator` | 跨領域 | 兩者皆可 | 否 | ✅ 已建立 | 依賴 Skill `mermaid-syntax` | 自建 |
 | `mod-test-runner` | 跨領域 | 兩者皆可（CI 事件或手動） | 否 | ❌ 未建立 | 依賴 Skill `test-script-conventions` | 自建 |
 | `mod-slide-generator` | 跨領域 | 互動式為主 | 視排版需求 | ❌ 未建立 | 沿用平台內建 `pptx` Skill | 沿用內建 Skill |
@@ -63,8 +63,8 @@
 | 名稱 | 可重用範圍 | 狀態 | 支援對象 | 參考來源 |
 |---|---|---|---|---|
 | `mermaid-syntax` | 跨領域 | ✅ 已建立 | `mod-diagram-generator` | 自建 |
-| `content-summarization` | 跨領域 | ❌ 未建立 | `mod-summarizer` | 自建 |
-| `web-scraping-patterns` | 跨領域 | ❌ 未建立 | `mod-web-scraper` | 自建 |
+| `content-summarization` | 跨領域 | ✅ 已建立 | `mod-summarizer` | 自建 |
+| `web-scraping-patterns` | 跨領域 | ✅ 已建立 | `mod-web-scraper` | 自建 |
 | `source-reliability-assessment` | 跨領域 | ❌ 未建立 | `wf-data-media` | 自建 |
 | `academic-citation-review` | 跨領域 | ❌ 未建立 | `wf-data-academic` | 自建 |
 | `financial-analysis-framework` | 跨領域 | ❌ 未建立 | `wf-data-market` | 自建 |
