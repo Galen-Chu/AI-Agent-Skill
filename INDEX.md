@@ -41,7 +41,7 @@
 | 名稱 | 可重用範圍 | 觸發型態 | 需人在場 | 狀態 | 依賴關係 | 參考來源 |
 |---|---|---|---|---|---|---|
 | `wf-design` | 僅本領域 | 互動式 | 是（需審閱回饋） | ✅ 已建立 | 可能呼叫 `mod-diagram-generator`、`mod-slide-generator` | 自建 |
-| `wf-dev` | 僅本領域 | 互動式為主，部署階段可事件觸發 | 視階段而定 | ❌ 未建立 | 呼叫 `mod-test-runner` | 自建 |
+| `wf-dev` | 僅本領域 | 互動式為主，部署階段可事件觸發 | 視階段而定 | ✅ 已建立 | 呼叫 `mod-test-runner` | 自建 |
 | `wf-data-media` | 僅本領域 | 互動式或排程 | 視情況 | ✅ 已建立 | 呼叫 `mod-web-scraper`；依賴 Skill `source-reliability-assessment` | 自建 |
 | `wf-data-academic` | 僅本領域 | 互動式 | 是（需查核引用） | ✅ 已建立 | 依賴 Skill `academic-citation-review` | 自建 |
 | `wf-data-market` | 僅本領域 | 互動式或排程 | 視情況 | ✅ 已建立 | 呼叫 `mod-web-scraper`；依賴 Skill `financial-analysis-framework` | 自建 |
@@ -54,9 +54,9 @@
 | `mod-web-scraper` | 跨領域 | 兩者皆可 | 否 | ✅ 已建立 | 依賴 Skill `web-scraping-patterns` | 自建 |
 | `mod-summarizer` | 跨領域 | 兩者皆可 | 否 | ✅ 已建立 | 依賴 Skill `content-summarization` | 自建 |
 | `mod-diagram-generator` | 跨領域 | 兩者皆可 | 否 | ✅ 已建立 | 依賴 Skill `mermaid-syntax` | 自建 |
-| `mod-test-runner` | 跨領域 | 兩者皆可（CI 事件或手動） | 否 | ❌ 未建立 | 依賴 Skill `test-script-conventions` | 自建 |
+| `mod-test-runner` | 跨領域 | 兩者皆可（CI 事件或手動） | 否 | ✅ 已建立 | 依賴 Skill `test-script-conventions` | 自建 |
 | `mod-slide-generator` | 跨領域 | 互動式為主 | 視排版需求 | ✅ 已建立 | 沿用平台內建 `pptx` Skill | 沿用內建 Skill |
-| `mod-script-writer` | 跨領域 | 互動式為主 | 視情況 | ❌ 未建立 | 依賴 Skill `speech-script-structure`；輸出可沿用內建 `docx` Skill | 自建 |
+| `mod-script-writer` | 跨領域 | 互動式為主 | 視情況 | ✅ 已建立 | 依賴 Skill `speech-script-structure`；輸出可沿用內建 `docx` Skill | 自建 |
 
 ## Skill
 
@@ -68,8 +68,8 @@
 | `source-reliability-assessment` | 跨領域 | ✅ 已建立 | `wf-data-media` | 自建 |
 | `academic-citation-review` | 跨領域 | ✅ 已建立 | `wf-data-academic` | 自建 |
 | `financial-analysis-framework` | 跨領域 | ✅ 已建立 | `wf-data-market` | 自建 |
-| `test-script-conventions` | 跨領域 | ❌ 未建立 | `mod-test-runner` | 自建 |
-| `speech-script-structure` | 跨領域 | ❌ 未建立 | `mod-script-writer` | 自建 |
+| `test-script-conventions` | 跨領域 | ✅ 已建立 | `mod-test-runner` | 自建 |
+| `speech-script-structure` | 跨領域 | ✅ 已建立 | `mod-script-writer` | 自建 |
 
 ## ④ 記憶/狀態層
 
