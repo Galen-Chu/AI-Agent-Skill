@@ -34,57 +34,64 @@
 | 名稱 | 可重用範圍 | 觸發型態 | 需人在場 | 狀態 | 依賴關係 | 參考來源 |
 |---|---|---|---|---|---|---|
 | `personal-assistant` | 跨領域 | 互動式 | 是 | ✅ 已建立 | 無 | 自建 |
-| `orch-main` | 跨領域 | 互動式 | 視情況 | ✅ 已建立 | 需彙整所有②③的路由邏輯 | 自建（規劃） |
+| `orch-main` | 跨領域 | 互動式 | 視情況 | ⏸️ 延後（待 Agent 數量門檻到達後排入時程） | 需彙整所有②③的路由邏輯 | 自建（規劃） |
 
 ## ② 領域工作流層
 
 | 名稱 | 可重用範圍 | 觸發型態 | 需人在場 | 狀態 | 依賴關係 | 參考來源 |
 |---|---|---|---|---|---|---|
-| `wf-design` | 僅本領域 | 互動式 | 是（需審閱回饋） | ✅ 已建立 | 可能呼叫 `mod-diagram-generator`、`mod-slide-generator` | 自建 |
-| `wf-dev` | 僅本領域 | 互動式為主，部署階段可事件觸發 | 視階段而定 | ✅ 已建立 | 呼叫 `mod-test-runner` | 自建 |
-| `wf-data-media` | 僅本領域 | 互動式或排程 | 視情況 | ✅ 已建立 | 呼叫 `mod-web-scraper`；依賴 Skill `source-reliability-assessment` | 自建 |
-| `wf-data-academic` | 僅本領域 | 互動式 | 是（需查核引用） | ✅ 已建立 | 依賴 Skill `academic-citation-review` | 自建 |
-| `wf-data-market` | 僅本領域 | 互動式或排程 | 視情況 | ✅ 已建立 | 呼叫 `mod-web-scraper`；依賴 Skill `financial-analysis-framework` | 自建 |
-| `wf-news-digest` | 僅本領域 | 排程式（建議 Cloud Routine） | 否 | ✅ 已建立 | 呼叫 `mod-web-scraper`、`mod-summarizer` | 自建 |
+| `wf-design` | 僅本領域 | 互動式 | 是（需審閱回饋） | ❌ 未建立 | 可能呼叫 `mod-diagram-generator`、`mod-slide-generator` | 自建 |
+| `wf-dev` | 僅本領域 | 互動式為主，部署階段可事件觸發 | 視階段而定 | ❌ 未建立 | 呼叫 `mod-test-runner` | 自建 |
+| `wf-data-media` | 僅本領域 | 互動式或排程 | 視情況 | ❌ 未建立 | 呼叫 `mod-web-scraper`；依賴 Skill `source-reliability-assessment` | 自建 |
+| `wf-data-academic` | 僅本領域 | 互動式 | 是（需查核引用） | ❌ 未建立 | 依賴 Skill `academic-citation-review` | 自建 |
+| `wf-data-market` | 僅本領域 | 互動式或排程 | 視情況 | ❌ 未建立 | 呼叫 `mod-web-scraper`；依賴 Skill `financial-analysis-framework` | 自建 |
+| `wf-news-digest` | 僅本領域 | 排程式（建議 Cloud Routine） | 否 | ⚠️ 規劃中 | 呼叫 `mod-web-scraper`、`mod-summarizer` | 自建 |
 
 ## ③ 能力模組層
 
 | 名稱 | 可重用範圍 | 觸發型態 | 需人在場 | 狀態 | 依賴關係 | 參考來源 |
 |---|---|---|---|---|---|---|
-| `mod-web-scraper` | 跨領域 | 兩者皆可 | 否 | ✅ 已建立 | 依賴 Skill `web-scraping-patterns` | 自建 |
-| `mod-summarizer` | 跨領域 | 兩者皆可 | 否 | ✅ 已建立 | 依賴 Skill `content-summarization` | 自建 |
+| `mod-web-scraper` | 跨領域 | 兩者皆可 | 否 | ❌ 未建立（優先序 1） | 依賴 Skill `web-scraping-patterns` | 自建 |
+| `mod-summarizer` | 跨領域 | 兩者皆可 | 否 | ❌ 未建立（優先序 2） | 依賴 Skill `content-summarization` | 自建 |
 | `mod-diagram-generator` | 跨領域 | 兩者皆可 | 否 | ✅ 已建立 | 依賴 Skill `mermaid-syntax` | 自建 |
-| `mod-test-runner` | 跨領域 | 兩者皆可（CI 事件或手動） | 否 | ✅ 已建立 | 依賴 Skill `test-script-conventions` | 自建 |
-| `mod-slide-generator` | 跨領域 | 互動式為主 | 視排版需求 | ✅ 已建立 | 沿用平台內建 `pptx` Skill | 沿用內建 Skill |
-| `mod-script-writer` | 跨領域 | 互動式為主 | 視情況 | ✅ 已建立 | 依賴 Skill `speech-script-structure`；輸出可沿用內建 `docx` Skill | 自建 |
+| `mod-test-runner` | 跨領域 | 兩者皆可（CI 事件或手動） | 否 | ❌ 未建立 | 依賴 Skill `test-script-conventions` | 自建 |
+| `mod-slide-generator` | 跨領域 | 互動式為主 | 視排版需求 | ❌ 未建立 | 沿用平台內建 `pptx` Skill | 沿用內建 Skill |
+| `mod-script-writer` | 跨領域 | 互動式為主 | 視情況 | ❌ 未建立 | 依賴 Skill `speech-script-structure`；輸出可沿用內建 `docx` Skill | 自建 |
+| `mod-registry-sync` | 跨領域 | 兩者皆可 | 否 | ✅ 已建立 | 依賴 Notion MCP；支援④記憶/狀態層的實際讀寫 | 自建 |
 
 ## Skill
 
 | 名稱 | 可重用範圍 | 狀態 | 支援對象 | 參考來源 |
 |---|---|---|---|---|
 | `mermaid-syntax` | 跨領域 | ✅ 已建立 | `mod-diagram-generator` | 自建 |
-| `content-summarization` | 跨領域 | ✅ 已建立 | `mod-summarizer` | 自建 |
-| `web-scraping-patterns` | 跨領域 | ✅ 已建立 | `mod-web-scraper` | 自建 |
-| `source-reliability-assessment` | 跨領域 | ✅ 已建立 | `wf-data-media` | 自建 |
-| `academic-citation-review` | 跨領域 | ✅ 已建立 | `wf-data-academic` | 自建 |
-| `financial-analysis-framework` | 跨領域 | ✅ 已建立 | `wf-data-market` | 自建 |
-| `test-script-conventions` | 跨領域 | ✅ 已建立 | `mod-test-runner` | 自建 |
-| `speech-script-structure` | 跨領域 | ✅ 已建立 | `mod-script-writer` | 自建 |
+| `content-summarization` | 跨領域 | ❌ 未建立 | `mod-summarizer` | 自建 |
+| `web-scraping-patterns` | 跨領域 | ❌ 未建立 | `mod-web-scraper` | 自建 |
+| `source-reliability-assessment` | 跨領域 | ❌ 未建立 | `wf-data-media` | 自建 |
+| `academic-citation-review` | 跨領域 | ❌ 未建立 | `wf-data-academic` | 自建 |
+| `financial-analysis-framework` | 跨領域 | ❌ 未建立 | `wf-data-market` | 自建 |
+| `test-script-conventions` | 跨領域 | ❌ 未建立 | `mod-test-runner` | 自建 |
+| `speech-script-structure` | 跨領域 | ❌ 未建立 | `mod-script-writer` | 自建 |
+| `obsidian-note-conventions` | 跨領域 | ✅ 已建立 | `personal-assistant`（日記／Work Log 等本機觸發的內容典藏） | 自建 |
 
 ## ④ 記憶/狀態層
 
+**分工原則**：Notion 負責「Agent 執行狀態追蹤」（結構化、雲端原生、任何觸發層都連得到），Obsidian 負責「實際產出內容的長期典藏」（日記、Work Log 等本機觸發、個人閱讀為主的內容）。兩者不互相替代，依內容性質分流。
+
+**重要限制**：Obsidian MCP 本質是本機服務（透過 Local REST API 外掛在 `127.0.0.1` 啟動），需要本機 Obsidian 應用程式在執行中才能連線。因此只適合搭配本機觸發（`/loop`、Desktop 排程）的 Agent，**不適合搭配 Cloud Routine 觸發的工作流**（如 `wf-news-digest`），除非額外架設 SSH 通道等橋接機制。
+
 | 名稱 | 可重用範圍 | 狀態 | 說明 | 參考來源 |
 |---|---|---|---|---|
-| Notion 登記簿 | 跨領域 | ⏸️ 待建 | 追蹤各工作流的執行狀態、排程設定、最後執行結果；透過 Notion MCP 讀寫 | 外部平台（Notion）+ 自建 schema |
+| Notion 登記簿（資料庫本體） | 跨領域 | ⏸️ 待建 | 追蹤各工作流的執行狀態、排程設定、最後執行結果；由 `mod-registry-sync` 讀寫 | 外部平台（Notion）+ 自建 schema |
+| Obsidian vault（內容典藏） | 僅本機觸發項目 | ⏸️ 待使用者設定 Local REST API 外掛 | 日記、Work Log 等內容的長期典藏；由 `personal-assistant` 搭配 `obsidian-note-conventions` 寫入 | 外部平台（Obsidian）+ 使用者本機環境 |
 
 ---
 
 ## 統計
 
-- ①協調層：2（1 已建立、1 延後）
-- ②領域工作流：6（0 已建立、1 規劃中、5 未建立）
-- ③能力模組：6（1 已建立、5 未建立）
-- Skill：8（1 已建立、7 未建立）
-- ④記憶/狀態層：1（待建）
+- ①協調層：2（`personal-assistant`、`orch-main` 皆已建立）
+- ②領域工作流：6（全數已建立）
+- ③能力模組：7（`mod-web-scraper`、`mod-summarizer`、`mod-diagram-generator`、`mod-slide-generator`、`mod-test-runner`、`mod-script-writer`、`mod-registry-sync` 全數已建立）
+- Skill：9（全數已建立）
+- ④記憶/狀態層：2 項基礎設施待建（Notion 登記簿資料庫本體、Obsidian Local REST API 設定）
 
-**建置優先序**：`mod-web-scraper` → `mod-summarizer` → `wf-news-digest` → 依序展開其餘②③ → 視 Agent 數量成長評估 `orch-main` 與 Notion 登記簿的建置時機。
+**目前進度**：①②③層與全部 Skill 皆已建立完成（22 個項目）。剩餘工作為使用者端的基礎設施設定——建立 Notion 登記簿資料庫本體（供 `mod-registry-sync` 讀寫）、在本機安裝並設定 Obsidian Local REST API 外掛（供 `personal-assistant` 搭配 `obsidian-note-conventions` 寫入）。
