@@ -48,6 +48,7 @@ flowchart TD
         modtest[mod-test-runner]
         modscript[mod-script-writer]
         modregistry[mod-registry-sync]
+        modeval[mod-eval-report]
     end
 
     subgraph L4["④ 記憶/狀態層"]
@@ -71,11 +72,16 @@ flowchart TD
     orch --> modregistry
     modregistry --> notion
     pa -.日記/Work Log.-> obsidian
+
+    orch -.需要驗收時.-> modeval
+    wfdev -.需要驗收時.-> modeval
 ```
 
 > `wf-data-academic` 未列出對③模組的依賴，因其查證需求偏向精確核對原文用詞，直接使用 WebSearch／WebFetch，未透過 `mod-web-scraper` 中介。
 >
 > `mod-registry-sync` 是唯一直接對接④記憶/狀態層的③模組，負責把①②層的執行狀態寫入 Notion 登記簿；`personal-assistant` 則直接搭配 `obsidian-note-conventions` 這份 Skill 寫入 Obsidian，兩者是不同的內容性質（狀態追蹤 vs 內容典藏），詳見下方「Notion 與 Obsidian 分工」。
+>
+> `mod-eval-report` 是可追溯性評測迴圈中「執行填報」階段的通用模組，無固定呼叫方——任何①②層完成產出後需要驗收是否符合既定 Schema 時都可呼叫，圖中僅示意兩個較常見的觸發來源。
 
 ## 命名規則
 
@@ -109,7 +115,8 @@ AI-Agent-Skill/
     │   ├── mod-slide-generator.md    # ③ 簡報生成
     │   ├── mod-test-runner.md        # ③ 測試執行
     │   ├── mod-script-writer.md      # ③ 講稿生成
-    │   └── mod-registry-sync.md      # ③ Notion 登記簿讀寫
+    │   ├── mod-registry-sync.md      # ③ Notion 登記簿讀寫
+    │   └── mod-eval-report.md        # ③ 評測 Schema 比對與報告產出
     └── skills/
         ├── mermaid-syntax/SKILL.md
         ├── web-scraping-patterns/SKILL.md
@@ -119,7 +126,8 @@ AI-Agent-Skill/
         ├── financial-analysis-framework/SKILL.md
         ├── test-script-conventions/SKILL.md
         ├── speech-script-structure/SKILL.md
-        └── obsidian-note-conventions/SKILL.md
+        ├── obsidian-note-conventions/SKILL.md
+        └── evaluation-schema-design/SKILL.md
 ```
 
 > `personal-assistant`（①，隱含協調）目前建議放在 `~/.claude/agents/`（個人層級），未隨此公版 repo 一起發布，因其內容偏向個人化日常事務設定。
@@ -158,11 +166,11 @@ AI-Agent-Skill/
 |---|---|---|
 | ① 協調層 | 2 | 已全數建立 |
 | ② 領域工作流層 | 6 | 已全數建立 |
-| ③ 能力模組層 | 7 | 已全數建立 |
-| Skill | 9 | 已全數建立 |
+| ③ 能力模組層 | 8 | 已全數建立 |
+| Skill | 10 | 已全數建立 |
 | ④ 記憶/狀態層 | 2（Notion 登記簿、Obsidian vault） | 基礎設施待使用者端設定 |
 
-①②③層與全部 Skill（22 個項目）皆已建立完成。完整的項目狀態、依賴關係與參考來源，見 [`INDEX.md`](./INDEX.md)。
+①②③層與全部 Skill（24 個項目）皆已建立完成。完整的項目狀態、依賴關係與參考來源，見 [`INDEX.md`](./INDEX.md)。
 
 ## Roadmap
 
@@ -170,3 +178,4 @@ AI-Agent-Skill/
 - [ ] 在本機安裝並設定 Obsidian 的 Local REST API 外掛，供 `personal-assistant` 寫入日記／Work Log
 - [ ] 依實際使用量評估是否需要拆分 `orch-main` 的路由邏輯（目前為單一 Agent，未來若規則複雜化可考慮進一步模組化）
 - [ ] 視新需求持續擴充②③層，遵循既有的分類標準（端到端領域 vs 可重用階段模組）判斷歸屬
+- [ ] `mod-eval-report` 目前只涵蓋評測迴圈的「執行填報」階段（依既定 Schema 比對輸出、產出報告）；指標規劃（該評什麼）與修正指令產出（怎麼優化）刻意先不做成獨立 Agent，待實際使用後若證實有反覆出現的痛點，再評估拆出對應模組，詳見 `AI-Agent-Skill-ArchitectureDesign.md` 第十一節

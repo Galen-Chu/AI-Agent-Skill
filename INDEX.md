@@ -58,6 +58,7 @@
 | `mod-slide-generator` | 跨領域 | 互動式為主 | 視排版需求 | ✅ 已建立 | 沿用平台內建 `pptx` Skill | 沿用內建 Skill |
 | `mod-script-writer` | 跨領域 | 互動式為主 | 視情況 | ✅ 已建立 | 依賴 Skill `speech-script-structure`；輸出可沿用內建 `docx` Skill | 自建 |
 | `mod-registry-sync` | 跨領域 | 兩者皆可 | 否 | ✅ 已建立 | 依賴 Notion MCP；支援④記憶/狀態層的實際讀寫 | 自建 |
+| `mod-eval-report` | 跨領域 | 兩者皆可 | 否 | ✅ 已建立 | 依賴 Skill `evaluation-schema-design`；是可追溯性評測迴圈中「執行填報」階段的通用模組 | 自建 |
 
 ## Skill
 
@@ -72,6 +73,7 @@
 | `test-script-conventions` | 跨領域 | ✅ 已建立 | `mod-test-runner` | 自建 |
 | `speech-script-structure` | 跨領域 | ✅ 已建立 | `mod-script-writer` | 自建 |
 | `obsidian-note-conventions` | 跨領域 | ✅ 已建立 | `personal-assistant`（日記／Work Log 等本機觸發的內容典藏） | 自建 |
+| `evaluation-schema-design` | 跨領域 | ✅ 已建立 | `mod-eval-report` | 自建 |
 
 ## ④ 記憶/狀態層
 
@@ -90,8 +92,10 @@
 
 - ①協調層：2（`personal-assistant`、`orch-main` 皆已建立）
 - ②領域工作流：6（全數已建立）
-- ③能力模組：7（`mod-web-scraper`、`mod-summarizer`、`mod-diagram-generator`、`mod-slide-generator`、`mod-test-runner`、`mod-script-writer`、`mod-registry-sync` 全數已建立）
-- Skill：9（全數已建立）
+- ③能力模組：8（`mod-web-scraper`、`mod-summarizer`、`mod-diagram-generator`、`mod-slide-generator`、`mod-test-runner`、`mod-script-writer`、`mod-registry-sync`、`mod-eval-report` 全數已建立）
+- Skill：10（全數已建立）
 - ④記憶/狀態層：2 項基礎設施待建（Notion 登記簿資料庫本體、Obsidian Local REST API 設定）
 
-**目前進度**：①②③層與全部 Skill 皆已建立完成（22 個項目）。剩餘工作為使用者端的基礎設施設定——建立 Notion 登記簿資料庫本體（供 `mod-registry-sync` 讀寫）、在本機安裝並設定 Obsidian Local REST API 外掛（供 `personal-assistant` 搭配 `obsidian-note-conventions` 寫入）。
+**目前進度**：①②③層與全部 Skill 皆已建立完成（24 個項目）。剩餘工作為使用者端的基礎設施設定——建立 Notion 登記簿資料庫本體（供 `mod-registry-sync` 讀寫）、在本機安裝並設定 Obsidian Local REST API 外掛（供 `personal-assistant` 搭配 `obsidian-note-conventions` 寫入）。
+
+**評測/驗收迴圈的範疇說明**：`mod-eval-report` 目前只實作「執行填報」這一階段（依既定 Schema 比對輸出、產出報告），不包含指標規劃與修正指令產出。這是刻意的最小可行版本，詳見 `AI-Agent-Skill-ArchitectureDesign.md` 第十一節與 README `Roadmap`。
