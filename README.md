@@ -179,3 +179,18 @@ AI-Agent-Skill/
 - [ ] 依實際使用量評估是否需要拆分 `orch-main` 的路由邏輯（目前為單一 Agent，未來若規則複雜化可考慮進一步模組化）
 - [ ] 視新需求持續擴充②③層，遵循既有的分類標準（端到端領域 vs 可重用階段模組）判斷歸屬
 - [ ] `mod-eval-report` 目前只涵蓋評測迴圈的「執行填報」階段（依既定 Schema 比對輸出、產出報告）；指標規劃（該評什麼）與修正指令產出（怎麼優化）刻意先不做成獨立 Agent，待實際使用後若證實有反覆出現的痛點，再評估拆出對應模組，詳見 `AI-Agent-Skill-ArchitectureDesign.md` 第十一節
+
+---
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 👤 Author
+
+**Galen Chu**
+
+- GitHub: [@Galen-Chu](https://github.com/Galen-Chu)
+- LinkedIn: [Galen Chu](https://www.linkedin.com/in/galen-chu-203590b5/)
