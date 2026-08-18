@@ -1,8 +1,10 @@
 # 🤖 AI-Agent-Skill
 
-公版 Claude Code Subagent 與 Skill 的架構化管理專案。目標是把日常工作（設計、開發、資料分析、測試、內容呈現等）拆解成一組分層清晰、職責單一、可重複使用的 Agent 與 Skill，避免每次遇到新需求都重新設計一次架構。
+> 公版 Claude Code Subagent 與 Skill 的架構化管理專案。目標是把日常工作（設計、開發、資料分析、測試、內容呈現等）拆解成一組分層清晰、職責單一、可重複使用的 Agent 與 Skill，避免每次遇到新需求都重新設計一次架構。
 
-## 架構設計
+---
+
+## 🏗️ Architecture · 架構設計
 
 整體遵循四層架構，關注點分離：**誰負責觸發（何時何處執行）** 與 **誰負責定義行為（做什麼、怎麼做）** 徹底解耦，Agent 定義本身不涉及任何排程/觸發邏輯。
 
@@ -83,18 +85,9 @@ flowchart TD
 >
 > `mod-eval-report` 是可追溯性評測迴圈中「執行填報」階段的通用模組，無固定呼叫方——任何①②層完成產出後需要驗收是否符合既定 Schema 時都可呼叫，圖中僅示意兩個較常見的觸發來源。
 
-## 命名規則
+---
 
-| 層級 | 前綴 | 範例 |
-|---|---|---|
-| ① 協調層 | `orch-` | `orch-main` |
-| ② 領域工作流 | `wf-` | `wf-dev`、`wf-data-academic` |
-| ③ 能力模組 | `mod-` | `mod-web-scraper` |
-| Skill | 不加前綴，語意導向命名 | `mermaid-syntax` |
-
-**Description 三段式公式**：`[做什麼功能]。[觸發情境/關鍵字]。[所屬層級與可重用範疇]。` 第一段影響自動路由準確度，第三段是給未來維護者看的定位註記。
-
-## 目錄結構
+## 📁 Project Structure · 目錄結構
 
 ```
 AI-Agent-Skill/
@@ -132,7 +125,22 @@ AI-Agent-Skill/
 
 > `personal-assistant`（①，隱含協調）目前建議放在 `~/.claude/agents/`（個人層級），未隨此公版 repo 一起發布，因其內容偏向個人化日常事務設定。
 
-## 核心設計原則
+---
+
+## 🏷️ Naming Conventions · 命名規則
+
+| 層級 | 前綴 | 範例 |
+|---|---|---|
+| ① 協調層 | `orch-` | `orch-main` |
+| ② 領域工作流 | `wf-` | `wf-dev`、`wf-data-academic` |
+| ③ 能力模組 | `mod-` | `mod-web-scraper` |
+| Skill | 不加前綴，語意導向命名 | `mermaid-syntax` |
+
+**Description 三段式公式**：`[做什麼功能]。[觸發情境/關鍵字]。[所屬層級與可重用範疇]。` 第一段影響自動路由準確度，第三段是給未來維護者看的定位註記。
+
+---
+
+## 📐 Design Principles · 核心設計原則
 
 1. **觸發層與定義層解耦**：Agent 定義內不寫排程邏輯（幾點跑、跑幾次），觸發方式在部署時才決定（`/loop`、Desktop 排程、Cloud Routine）
 2. **能力模組無領域判斷**：③層 Agent 換任何呼叫方都要能直接使用，不能預設自己知道「誰在呼叫我」
@@ -141,7 +149,9 @@ AI-Agent-Skill/
 5. **無人值守情境需要明確的預設值與誠實失敗機制**：排程觸發的 Agent（如 `wf-news-digest`）不能卡住等待確認，也不能為了看起來完整而虛構結果
 6. **版權合規內建於資料蒐集與摘要源頭**：`mod-web-scraper`、`mod-summarizer` 的 Skill 都內含引用限制與改寫規範，避免侵權風險擴散到下游所有呼叫方
 
-## Notion 與 Obsidian 分工
+---
+
+## 🗃️ Memory Layer · Notion 與 Obsidian 分工
 
 ④記憶/狀態層目前分成兩種不同性質的儲存需求，分別對應不同工具：
 
@@ -152,7 +162,9 @@ AI-Agent-Skill/
 
 **兩者不互相替代，也不建議混用**：Obsidian MCP 依賴本機執行中的 Local REST API 服務（`127.0.0.1`），Cloud Routine 觸發的工作流（如 `wf-news-digest`）連不到本機環境，因此狀態追蹤一律走 Notion；本機觸發的內容型記錄（日記等）才適合走 Obsidian。
 
-## 已知限制與注意事項
+---
+
+## ⚠️ Known Limitations · 已知限制與注意事項
 
 - **Skill 探索目前僅支援扁平結構**：`.claude/skills/` 只掃描頂層，`<skill-name>/SKILL.md` 為固定格式，不支援巢狀資料夾分類；分類靠命名語意與 `INDEX.md`，不靠實體資料夾
 - **多 Agent 協作依賴 `Agent` 工具**（原稱 `Task`，兩名稱目前皆可用）：協調型 Agent（如 `orch-main`、`wf-news-digest`）的 `tools` 欄位必須明確包含 `Agent`，否則無法實際委派子任務，這是硬性開關而非預設行為
@@ -160,7 +172,9 @@ AI-Agent-Skill/
 - **開源 Skill 一律改寫，不直接複製**：避免破壞原作者的 `${CLAUDE_SKILL_DIR}` 內部路徑引用，也避免授權疑慮
 - **Obsidian MCP 本質是本機服務**：需要本機安裝並啟用 Obsidian 的 Local REST API 社群外掛（伺服器跑在 `127.0.0.1`），Obsidian 應用程式須保持執行中才能連線；不適合搭配 Cloud Routine 等不依賴本機在線的觸發層
 
-## 目前進度
+---
+
+## 📊 Progress · 目前進度
 
 | 層級 | 數量 | 狀態 |
 |---|---|---|
@@ -172,7 +186,9 @@ AI-Agent-Skill/
 
 ①②③層與全部 Skill（24 個項目）皆已建立完成。完整的項目狀態、依賴關係與參考來源，見 [`INDEX.md`](./INDEX.md)。
 
-## Roadmap
+---
+
+## 🗺️ Roadmap
 
 - [ ] 在 Notion 建立登記簿資料庫本體（欄位：名稱、層級、觸發型態、狀態、最後執行結果、依賴模組），供 `mod-registry-sync` 讀寫
 - [ ] 在本機安裝並設定 Obsidian 的 Local REST API 外掛，供 `personal-assistant` 寫入日記／Work Log
