@@ -15,6 +15,8 @@
 ④ 記憶/狀態層 Memory       → 排程執行之間的狀態延續（外部化，不寫在 Agent 定義內）
 ```
 
+> 本節與 `INDEX.md` 的架構摘要僅供速覽；分層判斷標準、命名規則等規範的權威完整版在 [`AI-Agent-Skill-ArchitectureDesign.md`](./AI-Agent-Skill-ArchitectureDesign.md)，兩者如有出入，一律以設計文件為準。
+
 ### 分層判斷標準
 
 | 層級 | 判斷依據 |
@@ -81,7 +83,7 @@ flowchart TD
 
 > `wf-data-academic` 未列出對③模組的依賴，因其查證需求偏向精確核對原文用詞，直接使用 WebSearch／WebFetch，未透過 `mod-web-scraper` 中介。
 >
-> `mod-registry-sync` 是唯一直接對接④記憶/狀態層的③模組，負責把①②層的執行狀態寫入 Notion 登記簿；`personal-assistant` 則直接搭配 `obsidian-note-conventions` 這份 Skill 寫入 Obsidian，兩者是不同的內容性質（狀態追蹤 vs 內容典藏），詳見下方「Notion 與 Obsidian 分工」。
+> `mod-registry-sync` 是唯一直接對接④記憶/狀態層的③模組，負責把①②層的執行狀態寫入 Notion 登記簿；`personal-assistant`（①，個人層級，部署於 `~/.claude/agents/`，不隨本 repo 發布）則直接搭配 `obsidian-note-conventions` 這份 Skill 寫入 Obsidian，兩者是不同的內容性質（狀態追蹤 vs 內容典藏），詳見下方「Notion 與 Obsidian 分工」。
 >
 > `mod-eval-report` 是可追溯性評測迴圈中「執行填報」階段的通用模組，無固定呼叫方——任何①②層完成產出後需要驗收是否符合既定 Schema 時都可呼叫，圖中僅示意兩個較常見的觸發來源。
 
@@ -93,6 +95,9 @@ flowchart TD
 AI-Agent-Skill/
 ├── README.md
 ├── INDEX.md                          # 完整項目索引（狀態、依賴、參考來源）
+├── AI-Agent-Skill-ArchitectureDesign.md  # 架構設計方法論（規範權威來源）
+├── EVALUATION.md                     # 評測迴圈試跑紀錄
+├── LICENSE
 └── .claude/
     ├── agents/
     │   ├── orch-main.md              # ① 正式協調層
@@ -123,7 +128,7 @@ AI-Agent-Skill/
         └── evaluation-schema-design/SKILL.md
 ```
 
-> `personal-assistant`（①，隱含協調）目前建議放在 `~/.claude/agents/`（個人層級），未隨此公版 repo 一起發布，因其內容偏向個人化日常事務設定。
+> `personal-assistant`（①，隱含協調）已部署於 `~/.claude/agents/`（個人層級），不隨本公版 repo 發布，因其內容偏向個人化日常事務設定；其搭配的 `obsidian-note-conventions` Skill 已同步安裝一份至 `~/.claude/skills/`。
 
 ---
 
@@ -144,7 +149,7 @@ AI-Agent-Skill/
 
 1. **觸發層與定義層解耦**：Agent 定義內不寫排程邏輯（幾點跑、跑幾次），觸發方式在部署時才決定（`/loop`、Desktop 排程、Cloud Routine）
 2. **能力模組無領域判斷**：③層 Agent 換任何呼叫方都要能直接使用，不能預設自己知道「誰在呼叫我」
-3. **知識與身分分離**：可重用的判斷邏輯（語法規則、評估框架）拆成 Skill，Agent 本體只保留角色定位與流程協調，避免每次啟動都載入不必要的細節內容
+3. **知識與身分分離**：可重用的判斷邏輯（語法規則、評估框架）拆成 Skill，Agent 本體只保留角色定位與流程協調；Skill 內容只載入到掛載它的 subagent 上下文，主對話與其他不相關的 Agent 不必一起支付這些內容
 4. **風險等級決定行為準則，而非權限鎖**：低風險任務用「先做後告知」，高風險/不可逆操作用「先確認再執行」，而非每個 Agent 都套用最嚴格的權限管制
 5. **無人值守情境需要明確的預設值與誠實失敗機制**：排程觸發的 Agent（如 `wf-news-digest`）不能卡住等待確認，也不能為了看起來完整而虛構結果
 6. **版權合規內建於資料蒐集與摘要源頭**：`mod-web-scraper`、`mod-summarizer` 的 Skill 都內含引用限制與改寫規範，避免侵權風險擴散到下游所有呼叫方
@@ -169,8 +174,9 @@ AI-Agent-Skill/
 - **Skill 探索目前僅支援扁平結構**：`.claude/skills/` 只掃描頂層，`<skill-name>/SKILL.md` 為固定格式，不支援巢狀資料夾分類；分類靠命名語意與 `INDEX.md`，不靠實體資料夾
 - **多 Agent 協作依賴 `Agent` 工具**（原稱 `Task`，兩名稱目前皆可用）：協調型 Agent（如 `orch-main`、`wf-news-digest`）的 `tools` 欄位必須明確包含 `Agent`，否則無法實際委派子任務，這是硬性開關而非預設行為
 - **`mod-slide-generator` 依賴外部 `pptx` Skill**：需確認實際部署環境已具備對應 Skill，否則此模組無法正常運作
+- **`mod-registry-sync` 依賴名為 `notion` 的 MCP Server**：其 `tools` 白名單含 `mcp__notion`；部署環境未配置該 Server 時，MCP 工具不會掛載，模組會降級為僅剩本地 Read/Write、並在執行時誠實回報無法連線登記簿（2026-10 實測行為：未解析的 `mcp__` 白名單項目會被靜默略過，Agent 仍可啟動）。登記簿資料庫本體也需先建立各 Agent 的資料列
 - **開源 Skill 一律改寫，不直接複製**：避免破壞原作者的 `${CLAUDE_SKILL_DIR}` 內部路徑引用，也避免授權疑慮
-- **Obsidian MCP 本質是本機服務**：需要本機安裝並啟用 Obsidian 的 Local REST API 社群外掛（伺服器跑在 `127.0.0.1`），Obsidian 應用程式須保持執行中才能連線；不適合搭配 Cloud Routine 等不依賴本機在線的觸發層
+- **Obsidian MCP 本質是本機服務**：需要本機安裝並啟用 Obsidian 的 Local REST API 社群外掛（伺服器跑在 `127.0.0.1`），Obsidian 應用程式須保持執行中才能連線；不適合搭配 Cloud Routine 等不依賴本機在線的觸發層。`personal-assistant` 未來要透過 MCP 寫入 Obsidian 時，其 `tools` 白名單需加上 `mcp__obsidian`；在該 Server 實際配置前，未解析的 `mcp__` 白名單項目會被靜默略過、不會掛載任何工具
 
 ---
 
@@ -178,13 +184,13 @@ AI-Agent-Skill/
 
 | 層級 | 數量 | 狀態 |
 |---|---|---|
-| ① 協調層 | 2 | 已全數建立 |
+| ① 協調層 | 1 | 已建立（`orch-main`；`personal-assistant` 為個人層級，不隨 repo 發布） |
 | ② 領域工作流層 | 6 | 已全數建立 |
 | ③ 能力模組層 | 8 | 已全數建立 |
 | Skill | 10 | 已全數建立 |
 | ④ 記憶/狀態層 | 2（Notion 登記簿、Obsidian vault） | 基礎設施待使用者端設定 |
 
-①②③層與全部 Skill（24 個項目）皆已建立完成。完整的項目狀態、依賴關係與參考來源，見 [`INDEX.md`](./INDEX.md)。
+①②③層與全部 Skill（隨 repo 共 25 個項目）皆已建立完成。完整的項目狀態、依賴關係與參考來源，見 [`INDEX.md`](./INDEX.md)。
 
 ---
 
@@ -194,7 +200,7 @@ AI-Agent-Skill/
 - [ ] 在本機安裝並設定 Obsidian 的 Local REST API 外掛，供 `personal-assistant` 寫入日記／Work Log
 - [ ] 依實際使用量評估是否需要拆分 `orch-main` 的路由邏輯（目前為單一 Agent，未來若規則複雜化可考慮進一步模組化）
 - [ ] 視新需求持續擴充②③層，遵循既有的分類標準（端到端領域 vs 可重用階段模組）判斷歸屬
-- [ ] `mod-eval-report` 目前只涵蓋評測迴圈的「執行填報」階段（依既定 Schema 比對輸出、產出報告）；指標規劃（該評什麼）與修正指令產出（怎麼優化）刻意先不做成獨立 Agent，待實際使用後若證實有反覆出現的痛點，再評估拆出對應模組，詳見 `AI-Agent-Skill-ArchitectureDesign.md` 第十一節
+- [ ] `mod-eval-report` 目前只涵蓋評測迴圈的「執行填報」階段（依既定 Schema 比對輸出、產出報告）；指標規劃（該評什麼）與修正指令產出（怎麼優化）刻意先不做成獨立 Agent，待實際使用後若證實有反覆出現的痛點，再評估拆出對應模組，詳見 `AI-Agent-Skill-ArchitectureDesign.md` 第十一節；歷次試跑紀錄與落差模式觀察見 [`EVALUATION.md`](./EVALUATION.md)
 
 ---
 

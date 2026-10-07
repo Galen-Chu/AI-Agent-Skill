@@ -1,4 +1,4 @@
-# AI-Agent-Subagent-Skill 索引
+# AI-Agent-Skill 索引
 
 本文件是這個 repo 內所有 Subagent 與 Skill 的結構化總表，跟隨 `.claude/` 一起版控維護。
 新增、刪除、重新命名任何 Agent 或 Skill 時，請同步更新本文件，讓任何 clone 這個 repo 的人不用逐一開檔案就能理解整體架構。
@@ -13,6 +13,8 @@
 ③ 能力模組層 Capability    → 單一職責、無領域判斷、被上層呼叫
 ④ 記憶/狀態層 Memory       → 排程執行之間的狀態延續（外部化，不寫在 Agent 定義內）
 ```
+
+> 架構速覽與命名規則的權威完整版見 `AI-Agent-Skill-ArchitectureDesign.md`，如有出入以設計文件為準。
 
 ## 命名規則
 
@@ -33,8 +35,9 @@
 
 | 名稱 | 可重用範圍 | 觸發型態 | 需人在場 | 狀態 | 依賴關係 | 參考來源 |
 |---|---|---|---|---|---|---|
-| `personal-assistant` | 跨領域 | 互動式 | 是 | ✅ 已建立 | 無 | 自建 |
 | `orch-main` | 跨領域 | 互動式 | 視情況 | ✅ 已建立 | 需彙整所有②③的路由邏輯 | 自建（規劃） |
+
+> `personal-assistant` 屬個人層級 Agent（①，隱含協調，日常事務型），部署於 `~/.claude/agents/`，不隨本 repo 版控；其搭配的 `obsidian-note-conventions` Skill 已同步安裝一份至 `~/.claude/skills/`。
 
 ## ② 領域工作流層
 
@@ -72,7 +75,7 @@
 | `financial-analysis-framework` | 跨領域 | ✅ 已建立 | `wf-data-market` | 自建 |
 | `test-script-conventions` | 跨領域 | ✅ 已建立 | `mod-test-runner` | 自建 |
 | `speech-script-structure` | 跨領域 | ✅ 已建立 | `mod-script-writer` | 自建 |
-| `obsidian-note-conventions` | 跨領域 | ✅ 已建立 | `personal-assistant`（日記／Work Log 等本機觸發的內容典藏） | 自建 |
+| `obsidian-note-conventions` | 跨領域 | ✅ 已建立 | `personal-assistant`（個人層級；日記／Work Log 等本機觸發的內容典藏，另同步安裝於 `~/.claude/skills/`） | 自建 |
 | `evaluation-schema-design` | 跨領域 | ✅ 已建立 | `mod-eval-report` | 自建 |
 
 ## ④ 記憶/狀態層
@@ -83,19 +86,19 @@
 
 | 名稱 | 可重用範圍 | 狀態 | 說明 | 參考來源 |
 |---|---|---|---|---|
-| Notion 登記簿（資料庫本體） | 跨領域 | ✅ 已建立 | 追蹤各工作流的執行狀態、排程設定、最後執行結果；由 `mod-registry-sync` 讀寫 | 外部平台（Notion）+ 自建 schema |
+| Notion 登記簿（資料庫本體） | 跨領域 | ⏸️ 待建立 | 追蹤各工作流的執行狀態、排程設定、最後執行結果；由 `mod-registry-sync` 讀寫（需先配置 Notion MCP，並預先建立各 Agent 的資料列） | 外部平台（Notion）+ 自建 schema |
 | Obsidian vault（內容典藏） | 僅本機觸發項目 | ⏸️ 待使用者設定 Local REST API 外掛 | 日記、Work Log 等內容的長期典藏；由 `personal-assistant` 搭配 `obsidian-note-conventions` 寫入 | 外部平台（Obsidian）+ 使用者本機環境 |
 
 ---
 
 ## 統計
 
-- ①協調層：2（`personal-assistant`、`orch-main` 皆已建立）
+- ①協調層：1（`orch-main`；`personal-assistant` 為個人層級，部署於 `~/.claude/agents/`，不隨 repo 版控）
 - ②領域工作流：6（全數已建立）
 - ③能力模組：8（`mod-web-scraper`、`mod-summarizer`、`mod-diagram-generator`、`mod-slide-generator`、`mod-test-runner`、`mod-script-writer`、`mod-registry-sync`、`mod-eval-report` 全數已建立）
 - Skill：10（全數已建立）
 - ④記憶/狀態層：2 項基礎設施待建（Notion 登記簿資料庫本體、Obsidian Local REST API 設定）
 
-**目前進度**：①②③層與全部 Skill 皆已建立完成（24 個項目）。剩餘工作為使用者端的基礎設施設定——建立 Notion 登記簿資料庫本體（供 `mod-registry-sync` 讀寫）、在本機安裝並設定 Obsidian Local REST API 外掛（供 `personal-assistant` 搭配 `obsidian-note-conventions` 寫入）。
+**目前進度**：①②③層與全部 Skill 皆已建立完成（隨 repo 版控共 25 個項目）。剩餘工作為使用者端的基礎設施設定——建立 Notion 登記簿資料庫本體（供 `mod-registry-sync` 讀寫）、在本機安裝並設定 Obsidian Local REST API 外掛（供 `personal-assistant` 搭配 `obsidian-note-conventions` 寫入）。
 
 **評測/驗收迴圈的範疇說明**：`mod-eval-report` 目前只實作「執行填報」這一階段（依既定 Schema 比對輸出、產出報告），不包含指標規劃與修正指令產出。這是刻意的最小可行版本，詳見 `AI-Agent-Skill-ArchitectureDesign.md` 第十一節與 README `Roadmap`。

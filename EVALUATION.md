@@ -8,7 +8,7 @@
 
 **日期**：2026-08-11
 **觸發方式**：使用者直接請 `orch-main` 試跑一次驗收流程
-**待評測目標**：`.claude/Agents/mod-eval-report.md`
+**待評測目標**：`.claude/agents/mod-eval-report.md`
 **Schema 提供者**：使用者（人工整理，非由任何 Agent 自動產生——對應第十一節「指標規劃仍需呼叫方的領域判斷，不由通用模組代為決定」）
 
 ### 評測 Schema

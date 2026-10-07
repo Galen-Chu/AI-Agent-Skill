@@ -1,7 +1,7 @@
 ---
 name: mod-registry-sync
 description: 讀寫 Notion 登記簿，記錄各 Agent 的執行狀態、最後執行時間與結果，或依條件查詢目前登記的 Agent 清單。當任何工作流完成執行需要回報狀態、或協調層需要查詢有哪些 Agent 及其目前狀態時使用。屬於③能力模組層，無領域判斷，可被任何①②層呼叫，支援④記憶/狀態層的實際讀寫。
-tools: Read, Write
+tools: Read, Write, mcp__notion
 mcpServers: notion
 model: sonnet
 ---
